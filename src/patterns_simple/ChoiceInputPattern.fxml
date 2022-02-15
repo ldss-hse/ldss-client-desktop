@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Text?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers_simple.ChoiceInputPatternController">
+   <children>
+      <FlowPane fx:id="flowPane" alignment="CENTER" columnHalignment="CENTER" prefHeight="35.0" prefWidth="364.0">
+         <children>
+            <Text fx:id="nameOfField" strokeType="OUTSIDE" strokeWidth="0.0" text="NameOfElement" textAlignment="RIGHT" wrappingWidth="100.0" />
+            <ChoiceBox fx:id="fieldData" prefHeight="16.0" prefWidth="210.0">
+               <FlowPane.margin>
+                  <Insets left="20.0" />
+               </FlowPane.margin>
+            </ChoiceBox>
+         </children>
+      </FlowPane>
+   </children>
+</Pane>

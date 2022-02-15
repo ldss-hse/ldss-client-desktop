@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.Pane?>
+
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="75.0" prefWidth="141.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="controllers_simple.SaveButtonController">
+   <children>
+      <Button fx:id="saveButton" alignment="CENTER" layoutX="4.0" layoutY="24.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="134.0" style="-fx-background-color: #BDBDBD; -fx-background-radius: 100px; -fx-font-weight: bold; -fx-cursor: hand;" text="Сохранить" />
+   </children>
+</Pane>

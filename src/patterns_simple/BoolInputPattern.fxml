@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.Pane?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="controllers_simple.BoolInputPatternController">
+   <children>
+      <FlowPane fx:id="flowPane" alignment="CENTER" prefHeight="35.0" prefWidth="364.0">
+         <children>
+            <CheckBox fx:id="fieldData" mnemonicParsing="false" prefHeight="25.0" prefWidth="337.0" />
+         </children>
+      </FlowPane>
+   </children>
+</Pane>

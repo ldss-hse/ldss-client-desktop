@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane prefHeight="200.0" prefWidth="307.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="application.ChooseRegimeWindowController">
+   <children>
+      <Pane prefHeight="200.0" prefWidth="307.0">
+         <children>
+            <Button layoutX="59.0" layoutY="75.0" mnemonicParsing="false" onAction="#createCriteria" text="Создание структуры критериев" />
+            <Button layoutX="78.0" layoutY="119.0" mnemonicParsing="false" onAction="#inutAlternatives" text="Ввод оценки альтератив" />
+            <Label layoutX="18.0" layoutY="32.0" text="Выберите, в каком режиме хотите начать работу" />
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>

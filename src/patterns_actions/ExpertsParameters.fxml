@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane prefHeight="100.0" prefWidth="265.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="controllers_actions.ExpertsParametersController">
+   <children>
+      <Pane prefHeight="109.0" prefWidth="265.0">
+         <children>
+            <Label layoutX="14.0" layoutY="22.0" text="Количество экспертов" />
+            <TextField fx:id="countExperts" layoutX="147.0" layoutY="18.0" prefHeight="25.0" prefWidth="103.0" />
+            <Button layoutX="12.0" layoutY="66.0" mnemonicParsing="false" onAction="#startExpertize" prefHeight="25.0" prefWidth="237.0" text="Продолжить" />
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>
