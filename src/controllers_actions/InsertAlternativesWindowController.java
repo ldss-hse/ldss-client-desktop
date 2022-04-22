@@ -1,11 +1,13 @@
 package controllers_actions;
 
+import java.io.BufferedReader;
 import java.io.FileInputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Properties;
 
@@ -23,9 +25,20 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+
+
 
 public class InsertAlternativesWindowController {
-	int countColumns = 0, countRows = 0, curExpertId;
+    public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+
+    OkHttpClient client = new OkHttpClient();
+	
+	int countColumns = 0, countRows = 0, curExpertId, expertCount;
 	String[] columns, columnsTypes;
 	String[][] data;
 	FXMLLoader[] columnsControllers;
@@ -50,7 +63,7 @@ public class InsertAlternativesWindowController {
 	private DefaultTableAdapter dta;
 
 	public void prepareTable(String expertId) throws Exception {
-		curExpertId = Integer.valueOf(expertId);
+		expertCount = curExpertId = Integer.valueOf(expertId);
 		
 		// Connection to DB
 		readParametersOfDBConnection();
@@ -226,8 +239,13 @@ public class InsertAlternativesWindowController {
     		
     		//0 - Да, 1 - Нет, 2 - Cancel
     		if(status == 0) {
+    			//System.out.println("ДЛина данных" + data.length);
     			//Запаковка введенных альтератив по экспертам и отправка сервису на оценку
+    			prepareExpertJSON();
     			
+    			sendJSON();
+
+    			/*
     			st = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
     			rs = st.executeQuery("select * from " + tableName + ";");
 
@@ -238,9 +256,227 @@ public class InsertAlternativesWindowController {
     			}
 
     			rs.close();
-    			st.close();
+    			st.close();*/
     		}
     	}
+    }
+    
+    public void prepareExpertJSON() throws Exception {
+    	String fileName = "C:\\Users\\Boris\\eclipse-workspace-last\\AdaptableISSlection\\testJSON1.json";
+    	
+    	FileWriter writer = new FileWriter(fileName, false);
+        String text = "";
+        
+        //Ввод главного блока
+        text = "{\r\n"
+        		+ "   \"task_description\": \r\n"
+        		+ "   {\r\n"
+        		+ "		\"criteria\": {\r\n"
+        		+ "			\"group1\": [\n";
+        writer.write(text);
+        
+        //Ввод критериев
+        for(int i = 0; i < columns.length; i++) {
+        	if (i < columns.length - 1)
+        		text = "{\r\n"
+        				+ "				\"criteriaID\": \"" + columns[i] + "\",\r\n"
+        				+ "				\"criteriaName\": \"" + columns[i] + " of Group 1\",\r\n"
+        				+ "				\"qualitative\": false\r\n"
+        				+ "				},\n";	
+        	else
+        		text = "{\r\n"
+        				+ "				\"criteriaID\": \"" + columns[i] + "\",\r\n"
+        				+ "				\"criteriaName\": \"" + columns[i] + " of Group 1\",\r\n"
+        				+ "				\"qualitative\": false\r\n"
+        				+ "				}\n";	
+        	
+        	writer.write(text);
+        }
+        text = "]\r\n"
+        		+ "		},\n";
+        writer.write(text);
+
+        text = "		\"alternatives\": [\n";
+        writer.write(text);
+        
+        //Ввод альтернатив
+        for(int i = 0; i < data.length; i++) {
+        	if (i < data.length - 1)
+        		text = "			{\r\n"
+        				+ "			\"alternativeID\": \"a" + (i + 1) + ".g1\",\r\n"
+        				+ "			\"alternativeName\": \"Alternative " + (i + 1) +" from Group 1\",\r\n"
+        				+ "			\"abstractionLevelID\": \"group1\"\r\n"
+        				+ "			},\n";
+        	else
+        		text = "			{\r\n"
+        				+ "			\"alternativeID\": \"a" + (i + 1) + ".g1\",\r\n"
+        				+ "			\"alternativeName\": \"Alternative " + (i + 1) +" from Group 1\",\r\n"
+        				+ "			\"abstractionLevelID\": \"group1\"\r\n"
+        				+ "			}\n";
+        	
+        	writer.write(text);
+        }
+        
+        text = "		],\r\n"
+        		+ "		\r\n"
+        		+ "		\"scales\": [],\r\n\n";
+        writer.write(text);
+        
+        text = "		\"abstractionLevels\": [\r\n"
+        		+ "			{\r\n"
+        		+ "			\"abstractionLevelID\": \"group1\",\r\n"
+        		+ "			\"abstractionLevelName\": \"Group1\"\r\n"
+        		+ "			}\r\n"
+        		+ "		],\n";
+        writer.write(text);
+        
+        text = "		\"abstractionLevelWeights\": {\r\n"
+        		+ "			\"1\": 1\r\n"
+        		+ "		},\n";
+        writer.write(text);
+        
+        text = "		\"expertWeightsRule\": {\n";
+        writer.write(text);
+        //Веса экспертов
+        for (int i = 1; i < expertCount; i++) {
+        	text = "			\"" + i + "\": " + (1/expertCount) + ",\n";
+        	writer.write(text);
+        }
+    	text = "			\"" + expertCount + "\": " + (1/expertCount) + "\n 		},\n";
+    	writer.write(text);
+    	
+    	//Эксперты
+    	text = "		\"experts\": [\n";
+    	writer.write(text);
+        for (int i = 1; i < expertCount; i++) {
+        	text = "			{\r\n"
+        			+ "			\"expertName\": \"expert" + i + "\",\r\n"
+        			+ "			\"expertID\": \"expert" + i + "\",\r\n"
+        			+ "			\"competencies\": [\r\n"
+        			+ "				\"competence1\"\r\n"
+        			+ "			]\r\n"
+        			+ "			},\n";
+        	writer.write(text);
+        }
+    	text = "			{\r\n"
+    			+ "			\"expertName\": \"expert" + expertCount + "\",\r\n"
+    			+ "			\"expertID\": \"expert" + expertCount + "\",\r\n"
+    			+ "			\"competencies\": [\r\n"
+    			+ "				\"competence1\"\r\n"
+    			+ "			]\r\n"
+    			+ "			}\n";
+    	writer.write(text);
+    	
+    	text = "		],\n";
+    	writer.write(text);
+    	
+    	text = "		\"estimations\": {\n";
+    	writer.write(text);
+    	
+    	//Ввод оценок критериев по альтернативам
+		
+    	for (int i = 1; i <= expertCount; i++) {
+        	st = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+    		rs = st.executeQuery("select * from " + tableName + " where id_expert = " + i + ";");
+    		
+    		text = "			\"expert1\": [\n";
+    		writer.write(text);
+    		
+    		int curAlternative = 1;
+    		
+    		while (rs.next()) {
+    			text = "				{\r\n"
+    					+ "				\"alternativeID\": \"a" + curAlternative + ".g1\",";
+    			writer.write(text);
+    			
+    			text = "				\"criteria2Estimation\": [\n";
+    			writer.write(text);
+    			
+    			for (int j = 0; j < countColumns; j++) {
+    				text = "					{\r\n"
+    						+ "					\"criteriaID\": \"" + columns[j] + "\",\n";
+    				writer.write(text);
+    			
+    				if (j < countColumns - 1)
+		    			text = "					\"estimation\": [\r\n"
+		    					+ "						\"" + rs.getString(j + 1) + "\"\r\n"
+		    					+ "					],\r\n"
+		    					+ "					\"qualitative\": false\r\n"
+		    					+ "					},\n";
+    				else
+		    			text = "					\"estimation\": [\r\n"
+		    					+ "						\"" + rs.getString(j + 1) + "\"\r\n"
+		    					+ "					],\r\n"
+		    					+ "					\"qualitative\": false\r\n"
+		    					+ "					}\n";
+    				writer.write(text);
+
+    			//System.out.println();	
+
+
+    			}
+    			
+    			text = "]\n}";
+    			writer.write(text);
+    			
+    			if(curAlternative == data.length)
+        			text = "\n";
+    			else
+    				text = ",\n";
+        		writer.write(text);
+        		curAlternative++;
+    		}
+    		
+			if(i < expertCount)
+				text = "],\n}";
+			else
+				text = "]\n}";
+			writer.write(text);
+    	}
+
+		rs.close();
+		st.close();
+    	
+
+    	text = "}\n}";
+    	writer.write(text);
+        writer.flush();
+        
+        writer.close();
+    }
+    
+    public void sendJSON() throws Exception {
+        String json = bowlingJson();
+        System.out.println(json);
+        
+        String response = post("https://ldss-core-api-app.herokuapp.com/api/v1/make-decision", json);
+        System.out.println(response);
+    }
+    
+    String post(String url, String json) throws IOException {
+        RequestBody body = RequestBody.create(JSON, json);
+        Request request = new Request.Builder().url(url).post(body).build();
+        try (Response response = client.newCall(request).execute()) {
+            return response.body().string();
+        }
+    }
+
+    String bowlingJson() throws Exception {
+    	String fileName = "C:\\Users\\Boris\\eclipse-workspace-last\\AdaptableISSlection\\testJSON.json";
+    	
+        BufferedReader reader = new BufferedReader(new FileReader (fileName));
+        String line = null;
+        StringBuilder stringBuilder = new StringBuilder();
+        String ls = System.getProperty("line.separator");
+        while( ( line = reader.readLine() ) != null ) {
+            stringBuilder.append( line );
+            stringBuilder.append( ls );
+        }
+        
+        stringBuilder.deleteCharAt(stringBuilder.length()-1);
+        return stringBuilder.toString();
+
+    	//return "{\"task_description\":{}}";
     }
     
     public void readParametersOfDBConnection() {
