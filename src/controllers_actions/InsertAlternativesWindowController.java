@@ -63,6 +63,7 @@ public class InsertAlternativesWindowController {
 	private DefaultTableAdapter dta;
 
 	public void prepareTable(String expertId) throws Exception {
+		System.out.println("!!!");
 		expertCount = curExpertId = Integer.valueOf(expertId);
 		
 		// Connection to DB
@@ -75,6 +76,9 @@ public class InsertAlternativesWindowController {
 										+ "where information_schema.columns.table_name='" + tableName + "';");
 		rs.last();
 		countColumns = rs.getRow();
+		System.out.println(countColumns + tableName + "\n" + "select column_name, data_type " 
+				+ "from information_schema.columns "
+				+ "where information_schema.columns.table_name='" + tableName + "';");
 		rs.beforeFirst();
 
 		columns = new String[countColumns];
@@ -319,7 +323,19 @@ public class InsertAlternativesWindowController {
         
         text = "		],\r\n"
         		+ "		\r\n"
-        		+ "		\"scales\": [],\r\n\n";
+        		+ "		\"scales\": [{\r\n"
+        		+ "        \"scaleID\": \"Scale_Seven\",\r\n"
+        		+ "        \"scaleName\": \"Scale Seven Name\",\r\n"
+        		+ "        \"labels\": [\r\n"
+        		+ "          \"vp\",\r\n"
+        		+ "          \"p\",\r\n"
+        		+ "          \"mp\",\r\n"
+        		+ "          \"m\",\r\n"
+        		+ "          \"mg\",\r\n"
+        		+ "          \"g\",\r\n"
+        		+ "          \"vg\"\r\n"
+        		+ "        ]\r\n"
+        		+ "      }],\r\n\n";
         writer.write(text);
         
         text = "		\"abstractionLevels\": [\r\n"
@@ -379,7 +395,7 @@ public class InsertAlternativesWindowController {
         	st = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
     		rs = st.executeQuery("select * from " + tableName + " where id_expert = " + i + ";");
     		
-    		text = "			\"expert1\": [\n";
+    		text = "			\"expert" + i + "\": [\n";
     		writer.write(text);
     		
     		int curAlternative = 1;
@@ -451,6 +467,44 @@ public class InsertAlternativesWindowController {
         
         String response = post("https://ldss-core-api-app.herokuapp.com/api/v1/make-decision", json);
         System.out.println(response);
+        String[] responseResult = parseResponse(response);
+        String result = "Рейтинг альтернатив: \n";
+        
+        for (int i = 0; i < responseResult.length; i++) {
+        	result += (i + 1) + "." + responseResult[i] + "\n";
+        }
+        
+        JOptionPane.showMessageDialog(null, result);
+    }
+    
+    String[] parseResponse(String response) {
+    	int orderedAlternativesStart = response.indexOf("\"alternativesOrdered\":[") + 23,
+    		orderedAlternativesEnd = response.indexOf("],\"expertWeightsRule\"");
+    	
+    	String orderedAlternatives = response.substring(orderedAlternativesStart, orderedAlternativesEnd);
+    	
+    	System.out.println("\n" + response.substring(orderedAlternativesStart, orderedAlternativesEnd));
+    	
+    	int countOfOrderedAlternatives = orderedAlternatives.split("\"alternativeID\":\"").length - 1;
+    	
+    	String[] orderedAlternativesArray = new String[countOfOrderedAlternatives];
+    	
+    	int indexStart = orderedAlternatives.indexOf("\"alternativeID\":\"") + 17,
+    		indexEnds = orderedAlternatives.indexOf("\",\"estimation\"");
+    	
+    	while (countOfOrderedAlternatives > 0 ) {
+    		orderedAlternativesArray[orderedAlternativesArray.length - countOfOrderedAlternatives] = orderedAlternatives.substring(indexStart, indexEnds);
+
+    		countOfOrderedAlternatives--;
+    		
+    		indexStart = orderedAlternatives.indexOf("\"alternativeID\":\"", indexEnds) + 17;
+    	    indexEnds = orderedAlternatives.indexOf("\",\"estimation\"", indexStart);
+    	}
+    	
+    	for (String str : orderedAlternativesArray)
+    		System.out.println(str);
+    	
+    	return orderedAlternativesArray;
     }
     
     String post(String url, String json) throws IOException {
