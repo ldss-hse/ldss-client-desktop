@@ -19,7 +19,7 @@ public class ExpertsParametersController {
         	String countOfExperts = countExperts.getText();
         	
         	FXMLLoader loader = new FXMLLoader();
-        	loader.setLocation(getClass().getResource("../patterns_actions/InsertAlternativesWindow.fxml"));
+        	loader.setLocation(getClass().getResource("../controllers_actions/InsertAlternativesWindow.fxml"));
         	
             AnchorPane root;
             root = (AnchorPane) loader.load();

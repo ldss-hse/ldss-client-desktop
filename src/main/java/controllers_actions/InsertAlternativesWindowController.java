@@ -1,20 +1,5 @@
 package controllers_actions;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
-import java.util.Properties;
-
-import javax.swing.JOptionPane;
-
-import org.grios.tableadapter.DefaultTableAdapter;
-
 import controllers_simple.DateInputPatternController;
 import controllers_simple.TextInputPatternController;
 import javafx.event.ActionEvent;
@@ -25,11 +10,16 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
-import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
+import okhttp3.*;
+import org.grios.tableadapter.DefaultTableAdapter;
+
+import javax.swing.*;
+import java.io.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.Properties;
 
 
 
@@ -102,7 +92,7 @@ public class InsertAlternativesWindowController {
 			case "double precision":
 			case "character varying":
 		        loader = new FXMLLoader();
-		        loader.setLocation(getClass().getResource("../patterns_simple/TextInputPattern.fxml"));
+		        loader.setLocation(getClass().getResource("../controllers_simple/TextInputPattern.fxml"));
 
 		        newPane = (Pane) loader.load();
 		        columnsControllers[i - 1] = loader;
@@ -118,7 +108,7 @@ public class InsertAlternativesWindowController {
 				break;
 			case "date":
 		        loader = new FXMLLoader();
-		        loader.setLocation(getClass().getResource("../patterns_simple/DateInputPattern.fxml"));
+		        loader.setLocation(getClass().getResource("../controllers_simple/DateInputPattern.fxml"));
 
 		        newPane = (Pane) loader.load();
 		        columnsControllers[i - 1] = loader;
@@ -130,7 +120,7 @@ public class InsertAlternativesWindowController {
 				break;
 			case "boolean":
 		        loader = new FXMLLoader();
-		        loader.setLocation(getClass().getResource("../patterns_simple/BoolInputPattern.fxml"));
+		        loader.setLocation(getClass().getResource("../controllers_simple/BoolInputPattern.fxml"));
 
 		        newPane = (Pane) loader.load();
 		        columnsControllers[i - 1] = loader;

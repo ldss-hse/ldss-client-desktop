@@ -1,4 +1,4 @@
-package application;
+package adaptabledsss;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -9,26 +9,28 @@ import javafx.scene.layout.AnchorPane;
 //import patterns_actions.*;
 //import controllers_actions.*;
 
-public class Main extends Application {
+public class HelloApplication extends Application {
 
     @Override
     public void start(Stage primaryStage) {
         try {
-        	FXMLLoader loader = new FXMLLoader();
-        	
-        	loader.setLocation(getClass().getResource("ChooseRegimeWindow.fxml"));
-        	
+            FXMLLoader loader = new FXMLLoader();
+
+            loader.setLocation(getClass().getResource("ChooseRegimeWindow.fxml"));
+
         	/*loader.setLocation(getClass().getResource("InsertAlternativesWindow.fxml"));
         	loader.setLocation(getClass().getResource("../patterns_actions/CreateEntity.fxml"));
-        	
+
         	loader.setLocation(getClass().getResource("MainWindow.fxml"));*/
+
+            System.out.println(loader.getLocation());
 
             AnchorPane root;
             root = (AnchorPane) loader.load();
 
             /*MainWindowController mainWindowController = loader.getController();
             mainWindowController.prepareTable();
-            
+
             InsertAlternativesWindowController insertAlternativesWindowController = loader.getController();
             insertAlternativesWindowController.prepareTable();
 
