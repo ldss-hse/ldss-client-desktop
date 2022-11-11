@@ -92,7 +92,7 @@ public class InsertAlternativesWindowController {
 			case "double precision":
 			case "character varying":
 		        loader = new FXMLLoader();
-		        loader.setLocation(getClass().getResource("../controllers_simple/TextInputPattern.fxml"));
+		        loader.setLocation(getClass().getResource("/controllers_simple/TextInputPattern.fxml"));
 
 		        newPane = (Pane) loader.load();
 		        columnsControllers[i - 1] = loader;
@@ -108,7 +108,7 @@ public class InsertAlternativesWindowController {
 				break;
 			case "date":
 		        loader = new FXMLLoader();
-		        loader.setLocation(getClass().getResource("../controllers_simple/DateInputPattern.fxml"));
+		        loader.setLocation(getClass().getResource("/controllers_simple/DateInputPattern.fxml"));
 
 		        newPane = (Pane) loader.load();
 		        columnsControllers[i - 1] = loader;
@@ -120,7 +120,7 @@ public class InsertAlternativesWindowController {
 				break;
 			case "boolean":
 		        loader = new FXMLLoader();
-		        loader.setLocation(getClass().getResource("../controllers_simple/BoolInputPattern.fxml"));
+		        loader.setLocation(getClass().getResource("/controllers_simple/BoolInputPattern.fxml"));
 
 		        newPane = (Pane) loader.load();
 		        columnsControllers[i - 1] = loader;

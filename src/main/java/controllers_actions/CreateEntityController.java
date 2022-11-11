@@ -47,7 +47,7 @@ public class CreateEntityController {
 		Pane newPane;
 
 		loader = new FXMLLoader();
-		loader.setLocation(getClass().getResource("../controllers_actions/entityAttribute.fxml"));
+		loader.setLocation(getClass().getResource("/controllers_actions/entityAttribute.fxml"));
 
 		entityAttributesControllers.add(loader);
 
@@ -107,10 +107,12 @@ public class CreateEntityController {
             
             fis.close();
 
-            url = "jdbc:" + dbType + "://" + dbHost + "/" + dbName;
+            url = "jdbc:" + dbType + "://" + dbHost + ":5432/" + dbName;
     		props = new Properties();
     		props.setProperty("user", dbUser);
     		props.setProperty("password", dbPassword);
+			System.out.println("DB user " + dbUser);
+			System.out.println("DB password " + dbPassword);
     		conn = DriverManager.getConnection(url, props);
         } catch (IOException e) {
             System.err.println("ОШИБКА: Файл свойств отсуствует!");
