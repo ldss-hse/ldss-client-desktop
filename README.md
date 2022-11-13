@@ -10,7 +10,7 @@
 1. Download [JavaFX 19](https://gluonhq.com/products/javafx/)
 1. Create environment variable pointing to `bin` folder of JavaFX library (assuming we are working in PowerShell):
     ```bash
-    $env:PATH_TO_FX="C:\Users\a00815200\Documents\_LIBRARIES\javafx-sdk-19\lib"
+    $env:PATH_TO_FX="D:\_LIBRARIES\javafx-sdk-19\lib"
     ```
 
     1. If you are working from eclipse here are [instructions](https://stackoverflow.com/questions/64560205/getting-module-javafx-controls-not-found-error-java-eclipse-ide) 

@@ -107,12 +107,10 @@ public class CreateEntityController {
             
             fis.close();
 
-            url = "jdbc:" + dbType + "://" + dbHost + ":5432/" + dbName;
+            url = "jdbc:" + dbType + "://" + dbHost + "/" + dbName;
     		props = new Properties();
     		props.setProperty("user", dbUser);
     		props.setProperty("password", dbPassword);
-			System.out.println("DB user " + dbUser);
-			System.out.println("DB password " + dbPassword);
     		conn = DriverManager.getConnection(url, props);
         } catch (IOException e) {
             System.err.println("ОШИБКА: Файл свойств отсуствует!");
