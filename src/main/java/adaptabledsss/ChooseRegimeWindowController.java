@@ -15,7 +15,7 @@ public class ChooseRegimeWindowController {
     void createCriteria(ActionEvent event) {
         try {
         	FXMLLoader loader = new FXMLLoader();
-        	loader.setLocation(getClass().getResource("../controllers_actions/CreateEntity.fxml"));
+        	loader.setLocation(getClass().getResource("/controllers_actions/CreateEntity.fxml"));
 
             AnchorPane root;
             root = (AnchorPane) loader.load();
@@ -35,7 +35,7 @@ public class ChooseRegimeWindowController {
     void inutAlternatives(ActionEvent event) {
         try {
         	FXMLLoader loader = new FXMLLoader();
-        	loader.setLocation(getClass().getResource("../controllers_actions/ExpertsParameters.fxml"));
+        	loader.setLocation(getClass().getResource("/controllers_actions/ExpertsParameters.fxml"));
         	
             AnchorPane root;
             root = (AnchorPane) loader.load();

@@ -47,7 +47,7 @@ public class CreateEntityController {
 		Pane newPane;
 
 		loader = new FXMLLoader();
-		loader.setLocation(getClass().getResource("../controllers_actions/entityAttribute.fxml"));
+		loader.setLocation(getClass().getResource("/controllers_actions/entityAttribute.fxml"));
 
 		entityAttributesControllers.add(loader);
 
