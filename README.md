@@ -22,7 +22,7 @@
     ```
 ### Run instructions
 
-1. Specify settings to connect to PostgreSQL server in `properties/config.properties`. Change
+1. Specify settings to connect to PostgreSQL server in `src/properties/config.properties`. Change
    only following lines (password as you configured earlier):
     ```bash
     db.name=ldss
