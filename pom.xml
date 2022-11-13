@@ -62,8 +62,6 @@
             <groupId>org.grios.tableadapter</groupId>
             <artifactId>fx_table_adapter</artifactId>
             <version>1.0</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/libs/fx_table_adapter.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>org.postgresql</groupId>
@@ -107,12 +105,12 @@
                 <artifactId>maven-assembly-plugin</artifactId>
                 <configuration>
                     <archive>
-                    <manifest>
-                        <mainClass>adaptabledsss.HelloApplication</mainClass>
-                    </manifest>
+                        <manifest>
+                            <mainClass>adaptabledsss.HelloApplication</mainClass>
+                        </manifest>
                     </archive>
                     <descriptorRefs>
-                    <descriptorRef>jar-with-dependencies</descriptorRef>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
                     </descriptorRefs>
                 </configuration>
             </plugin>

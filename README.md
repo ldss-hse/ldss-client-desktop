@@ -16,8 +16,10 @@
     1. If you are working from eclipse here are [instructions](https://stackoverflow.com/questions/64560205/getting-module-javafx-controls-not-found-error-java-eclipse-ide) 
 1. Create database in PostgreSQL server: either in [command line](https://www.guru99.com/postgresql-create-database.html) 
    or [pgAdmin](https://www.pgadmin.org/download/). Database name: `ldss`.
-
-1. Download [PostgreSQL JDBC driver](https://jdbc.postgresql.org/download/) and put it into 
+1. Install local dependencies:
+    ```bash
+    mvn install:install-file -Dfile="D:\hse\ldss-client-desktop\libs\fx_table_adapter.jar" -DgroupId="org.grios.tableadapter" -DartifactId="fx_table_adapter" -Dversion="1.0" -Dpackaging=jar
+    ```
 ### Setup instructions
 
 1. Specify settings to connect to PostgreSQL server in `properties/config.properties`. Change
@@ -32,5 +34,5 @@
     ```
 1. Run project:
     ```bash
-    java --module-path $env:PATH_TO_FX --add-modules javafx.controls,javafx.fxml -cp ".\target\AdaptableDSS-1.0-SNAPSHOT.jar;C:\Users\a00815200\Documents\_LIBRARIES\postgresql-42.5.0.jar" adaptabledsss.HelloApplication
+    java --module-path $env:PATH_TO_FX --add-modules javafx.controls,javafx.fxml -cp .\target\AdaptableDSS-1.0-SNAPSHOT-jar-with-dependencies.jar adaptabledsss.HelloApplication
     ```

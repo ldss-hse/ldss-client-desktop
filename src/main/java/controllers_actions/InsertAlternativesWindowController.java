@@ -255,10 +255,8 @@ public class InsertAlternativesWindowController {
     	}
     }
     
-    public void prepareExpertJSON() throws Exception {
-    	String fileName = "C:\\Users\\Boris\\eclipse-workspace-last\\AdaptableISSlection\\testJSON1.json";
-    	
-    	FileWriter writer = new FileWriter(fileName, false);
+    public void prepareExpertJSON() throws Exception {    	
+    	FileWriter writer = new FileWriter(getTempJSONFileForRequest(), false);
         String text = "";
         
         //Ввод главного блока
@@ -498,17 +496,18 @@ public class InsertAlternativesWindowController {
     }
     
     String post(String url, String json) throws IOException {
-        RequestBody body = RequestBody.create(JSON, json);
+        RequestBody body = RequestBody.create(json, JSON);
         Request request = new Request.Builder().url(url).post(body).build();
-        try (Response response = client.newCall(request).execute()) {
-            return response.body().string();
-        }
+
+		Call call = client.newCall(request);
+		Response response = call.execute();
+        
+		final String responseAsText = response.body().string();
+		return responseAsText;
     }
 
     String bowlingJson() throws Exception {
-    	String fileName = "C:\\Users\\Boris\\eclipse-workspace-last\\AdaptableISSlection\\testJSON.json";
-    	
-        BufferedReader reader = new BufferedReader(new FileReader (fileName));
+    	BufferedReader reader = new BufferedReader(new FileReader (getTempJSONFileForRequest()));
         String line = null;
         StringBuilder stringBuilder = new StringBuilder();
         String ls = System.getProperty("line.separator");
@@ -516,14 +515,20 @@ public class InsertAlternativesWindowController {
             stringBuilder.append( line );
             stringBuilder.append( ls );
         }
+		reader.close();
         
         stringBuilder.deleteCharAt(stringBuilder.length()-1);
         return stringBuilder.toString();
-
-    	//return "{\"task_description\":{}}";
     }
     
-    public void readParametersOfDBConnection() {
+    private File getTempJSONFileForRequest() {
+		File tempDirectory = new File(System.getProperty("java.io.tmpdir"));
+		File newFile = new File(tempDirectory.getAbsolutePath() + File.separator + "testJSON.json");
+		System.out.println("Creating a JSON file in: " + newFile);
+		return newFile;
+	}
+	
+	public void readParametersOfDBConnection() {
     	FileInputStream fis;
     	Properties connectionProperties = new Properties();
     	
